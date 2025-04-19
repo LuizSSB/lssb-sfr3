@@ -15,7 +15,7 @@ struct ItemListScreen: View {
         VStack {
             let _ = print("render body")
             Text(viewModel.state.detail?.state.item.name ?? "NO ITEM")
-            ForEach(viewModel.state.items, id: \.name) { item in
+            ForEach(viewModel.state.items ?? [], id: \.name) { item in
                 Button(item.name) {
                     viewModel.select(item: item)
                 }
