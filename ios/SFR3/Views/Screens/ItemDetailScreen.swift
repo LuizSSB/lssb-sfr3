@@ -14,7 +14,6 @@ struct ItemDetailScreen: View {
         let _ = print("render detail")
         Text(viewModel.state.item.name)
         Button("asd") {
-            viewModel.state.item = .init(name: String(Int.random(in: 0..<100)))
         }
     }
 }
