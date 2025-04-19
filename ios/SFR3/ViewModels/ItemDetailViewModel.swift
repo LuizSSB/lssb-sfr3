@@ -8,12 +8,12 @@
 import SwiftUI
 import Factory
 
-@Observable class DetailViewModel: ViewModel {
+@Observable class ItemDetailViewModel: ViewModel {
     struct State: ViewModelState {
-        let item: Item
+        var item: Item
     }
     
-    let state: State
+    var state: State
     
     init(item: Item) {
         state = .init(item: item)
@@ -21,8 +21,8 @@ import Factory
 }
 
 extension Container {
-    var detailViewModel: Factory<(Item) -> DetailViewModel> {
-        self { DetailViewModel.init(item:) }
+    var itemDetailViewModel: Factory<(Item) -> ItemDetailViewModel> {
+        self { ItemDetailViewModel.init(item:) }
             .singleton
     }
 }

@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import Factory
 
 @main
 struct SFR3App: App {
+    @State var viewModel = Container.shared.appViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                ItemListScreen(viewModel: viewModel.state.itemList)
+            }
         }
     }
 }

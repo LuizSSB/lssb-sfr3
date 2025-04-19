@@ -11,19 +11,19 @@ import Factory
 @Observable class ItemListViewModel: ViewModel {
     struct State: ViewModelState {
         var items = [Item(name: "foo")]
-        var detail: DetailViewModel?
+        
+        var detail: ItemDetailViewModel?
     }
     
     var state = State()
     
     func select(item: Item) {
-        state.detail = Container.shared.detailViewModel()(item)
+        state.detail = .init(item: item)
     }
 }
 
 extension Container {
-    var itemListViewModel: Factory<() -> ItemListViewModel> {
-        self { ItemListViewModel.init }
-            .singleton
+    var itemListViewModel: Factory<ItemListViewModel> {
+        self { ItemListViewModel() }
     }
 }
