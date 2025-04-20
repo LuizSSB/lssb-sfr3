@@ -1,0 +1,9 @@
+.save-toolbar {
+    display: flex;
+
+}
+.save-toolbar * {
+    padding: 8px;
+    width: 100%;
+    background: blue;
+}

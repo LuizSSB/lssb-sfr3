@@ -1,7 +1,6 @@
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route as RawRoute } from "react-router-dom";
-import Home from "./pages/Home";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,6 +31,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import { Provider } from "react-redux";
+import { EditItemPage, NewItemPage } from "./pages/ItemPage";
 import store from "./store";
 import "./theme/variables.css";
 
@@ -45,11 +45,11 @@ const App: React.FC = () => (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home />
+          <Route exact path={NewItemPage.route}>
+            <NewItemPage />
           </Route>
-          <Route exact path="/">
-            <Home />
+          <Route exact path={EditItemPage.route}>
+            <EditItemPage />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>
