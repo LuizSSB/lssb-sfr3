@@ -21,6 +21,9 @@ struct ItemListScreen: View {
                 }
             }
         }
+        .firstTask {
+            await viewModel.refresh()
+        }
         .navigationDestination(item: $viewModel.state.detail) { detail in
             ItemDetailScreen(viewModel: detail)
         }
