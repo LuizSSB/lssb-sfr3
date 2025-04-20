@@ -1,14 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import { all, fork } from "redux-saga/effects";
-import { itemFormSaga, itemFormSlice } from "./slices/itemForm";
+import { itemFormSaga, itemFormSlice } from "./slices/itemFormSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
-    itemFormSlice: itemFormSlice.reducer,
+    itemForm: itemFormSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),
@@ -21,7 +20,5 @@ const rootSaga = function* () {
 sagaMiddleware.run(rootSaga);
 
 export type AppState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 
 export default store;

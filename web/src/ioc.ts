@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import { ItemDataSource } from "./datasources/item";
+import { ItemDataSource } from "./datasources/ItemDataSource";
 
 export const iocContainer = new Container();
 
