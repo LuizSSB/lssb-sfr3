@@ -31,6 +31,8 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
+import { Provider } from "react-redux";
+import store from "./store";
 import "./theme/variables.css";
 
 setupIonicReact();
@@ -39,18 +41,20 @@ setupIonicReact();
 const Route: typeof RawRoute & React.FC = RawRoute as any;
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+  <Provider store={store}>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/home">
+            <Home />
+          </Route>
+          <Route exact path="/">
+            <Home />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  </Provider>
 );
 
 export default App;
