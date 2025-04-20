@@ -1,6 +1,9 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import { loadIoCContainer } from "./ioc";
+
+loadIoCContainer();
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
