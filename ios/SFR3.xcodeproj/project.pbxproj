@@ -33,9 +33,22 @@
 		6023B6202DB2C5CE003D90C0 /* SFR3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFR3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		604E4BB72DB542CE000D0C36 /* Exceptions for "SFR3" folder in "SFR3" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6023B6072DB2C5CD003D90C0 /* SFR3 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6023B60A2DB2C5CD003D90C0 /* SFR3 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				604E4BB72DB542CE000D0C36 /* Exceptions for "SFR3" folder in "SFR3" target */,
+			);
 			path = SFR3;
 			sourceTree = "<group>";
 		};
@@ -403,6 +416,7 @@
 				DEVELOPMENT_TEAM = UJ5BDD4V99;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SFR3/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -441,6 +455,7 @@
 				DEVELOPMENT_TEAM = UJ5BDD4V99;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SFR3/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
