@@ -86,7 +86,7 @@ class WebBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 }
 
 extension WebBridgeMessageHandler.SubHandler {
-    func wrap<TPayload: Codable>(
+    @discardableResult func wrap<TPayload: Codable>(
         handler: WebBridgeMessageHandler,
         message: WebBridgeMessage,
         _ action: (WebBridgeMessage, TPayload) async throws -> (any Codable)?

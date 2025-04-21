@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ItemDetailScreen: View {
+    @Environment(\.dismiss) var dismiss
+    
     @State var viewModel: ItemDetailViewModel
     
     var body: some View {
@@ -19,5 +21,9 @@ struct ItemDetailScreen: View {
             ]
         )
             .edgesIgnoringSafeArea(.all)
+            .onReceive(viewModel.navigationMessageHandler.triggerCancel) {
+                _ in
+                dismiss()
+            }
     }
 }
