@@ -21,12 +21,11 @@ extension WebBridgeMessage {
     }
 }
 
-protocol NullWebBridgePayload: Codable {
-    var messageId: String { get }
+struct CancelWebBridgePayload: Codable {
 }
 
 struct ErrorWebBridgePayload: Codable {
-    let error: Int
+    let error: AppErrorCode
 }
 
 struct GetItemRequestWebBridgePayload: Codable {

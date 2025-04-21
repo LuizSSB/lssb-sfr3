@@ -24,12 +24,12 @@ private struct ControllableWebView: UIViewRepresentable {
         let config = WKWebViewConfiguration()
         config.userContentController = WKUserContentController()
         self.webView = WKWebView(frame: .zero, configuration: config)
+        self.webView.isInspectable = true
     }
     
     func makeUIView(context: Context) -> WKWebView {
         switch content {
         case .remote(let urlString):
-//            "http://localhost:5173/item"
             webView.load(URLRequest(url: URL(string: urlString)!))
             
         case let .local(htmlFile, directory):
@@ -51,43 +51,39 @@ private struct ControllableWebView: UIViewRepresentable {
         // No-op
     }
     
-    func add(handler: any WebBridgeMessageHandler) {
+    func add(handler: WebBridgeMessageHandler) {
+        handler.webView = webView
         webView.configuration.userContentController.add(
-            handler,
-            name: handler.channelName
+            handler, name: WebBridgeMessageHandler.channelName
         )
     }
     
-    func remove(handler: any WebBridgeMessageHandler) {
+    func remove(handler: WebBridgeMessageHandler) {
+        handler.webView = nil
         webView.configuration.userContentController
-            .removeScriptMessageHandler(forName: handler.channelName)
+            .removeScriptMessageHandler(forName: WebBridgeMessageHandler.channelName)
     }
 }
 
 struct WebViewContainer: View {
-    var messageHandler: (any WebBridgeMessageHandler)?
-    
+    let messageHandler: WebBridgeMessageHandler
     @State private var webView: ControllableWebView
     
     init(
         content: WebViewContent,
-        messageHandler: (any WebBridgeMessageHandler)? = nil
+        messageHandlers: [any WebBridgeMessageHandler.SubHandler] = []
     ) {
-        self.messageHandler = messageHandler
         self.webView = .init(content: content)
+        self.messageHandler = .init(subHandlers: messageHandlers)
     }
     
     var body: some View {
         webView
             .onAppear {
-                if let messageHandler {
-                    webView.add(handler: messageHandler)
-                }
+                webView.add(handler: messageHandler)
             }
             .onDisappear {
-                if let messageHandler {
-                    webView.remove(handler: messageHandler)
-                }
+                webView.remove(handler: messageHandler)
             }
     }
 }
