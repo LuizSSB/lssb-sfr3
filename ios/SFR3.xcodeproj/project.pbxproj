@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60A290612DB6FF8D008876A6 /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 60A290602DB6FF8D008876A6 /* Dev.xcconfig */; };
 		60A3AB6F2DB2DDE300F955C3 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 60A3AB6E2DB2DDE300F955C3 /* Factory */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		6023B6082DB2C5CD003D90C0 /* SFR3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SFR3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6023B6162DB2C5CE003D90C0 /* SFR3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFR3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6023B6202DB2C5CE003D90C0 /* SFR3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SFR3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60A290602DB6FF8D008876A6 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -93,6 +95,7 @@
 		6023B5FF2DB2C5CD003D90C0 = {
 			isa = PBXGroup;
 			children = (
+				60A290602DB6FF8D008876A6 /* Dev.xcconfig */,
 				6023B60A2DB2C5CD003D90C0 /* SFR3 */,
 				6023B6192DB2C5CE003D90C0 /* SFR3Tests */,
 				6023B6232DB2C5CE003D90C0 /* SFR3UITests */,
@@ -234,6 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60A290612DB6FF8D008876A6 /* Dev.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +411,7 @@
 		};
 		6023B62B2DB2C5CE003D90C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60A290602DB6FF8D008876A6 /* Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

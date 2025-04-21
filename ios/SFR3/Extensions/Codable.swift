@@ -25,6 +25,15 @@ extension Encodable {
 
 
 extension Decodable {
+    init(jsonLikeObject: [String:Any], decoder: JSONDecoder = .init()) throws {
+        let data = try JSONSerialization.data(
+            withJSONObject: jsonLikeObject,
+            options: []
+        )
+        let decoded = try decoder.decode(Self.self, from: data)
+        self = decoded
+    }
+    
     init(jsonString: String, decoder: JSONDecoder = .init()) throws {
         guard let jsonData = jsonString.data(using: .utf8)
         else { throw JSONCodingError.decoding(jsonString) }

@@ -1,0 +1,15 @@
+//
+//  Debug.xcconfig
+//  SFR3
+//
+//  Created by Luiz SSB on 21/04/25.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+WEB_COMPONENT_MODE = remote
+WEB_COMPONENT_REMOTE_SCHEME = http
+WEB_COMPONENT_REMOTE_HOST = 192.168.0.107:5173
+WEB_COMPONENT_LOCAL_FILE =
+WEB_COMPONENT_LOCAL_DIR = 

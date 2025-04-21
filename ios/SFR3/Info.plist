@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>WebComponentConfig</key>
+	<dict>
+		<key>localDir</key>
+		<string>$(WEB_COMPONENT_LOCAL_DIR)</string>
+		<key>localFile</key>
+		<string>$(WEB_COMPONENT_LOCAL_FILE)</string>
+		<key>remoteHost</key>
+		<string>$(WEB_COMPONENT_REMOTE_HOST)</string>
+		<key>remoteScheme</key>
+		<string>$(WEB_COMPONENT_REMOTE_SCHEME)</string>
+		<key>mode</key>
+		<string>$(WEB_COMPONENT_MODE)</string>
+	</dict>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
