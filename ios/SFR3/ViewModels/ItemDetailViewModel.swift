@@ -10,15 +10,18 @@ import Factory
 
 @Observable class ItemDetailViewModel: ViewModel {
     struct State: ViewModelState {
-        var item: Item
+        var item: Item?
     }
     
     var state: State
     
     @ObservationIgnored
-    let webBridgeMessageHandler: WebBridgeMessageHandler = ItemFormMessageHandler()
+    let itemFormMessageHandler = ItemFormMessageHandler()
     
-    init(item: Item) {
+    @ObservationIgnored
+    let navigationMessageHandler = NavigationMessageHandler()
+    
+    init(item: Item? = nil) {
         state = .init(item: item)
     }
 }

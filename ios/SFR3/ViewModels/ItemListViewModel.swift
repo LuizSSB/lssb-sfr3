@@ -89,6 +89,10 @@ import Factory
         }
     }
     
+    func add() {
+        state.detail = .init()
+    }
+    
     func select(item: Item) {
         guard state.deleteStatus != .running else { return }
         

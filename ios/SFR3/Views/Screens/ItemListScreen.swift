@@ -13,15 +13,22 @@ struct ItemListScreen: View {
     
     var body: some View {
         VStack {
-            let _ = print("render body")
-            Text(viewModel.state.detail?.state.item.name ?? "NO ITEM")
             ForEach(viewModel.state.items ?? [], id: \.name) { item in
                 Button(item.name) {
                     viewModel.select(item: item)
                 }
             }
         }
-        .firstTask {
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.add()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .task {
             await viewModel.refresh()
         }
         .navigationDestination(item: $viewModel.state.detail) { detail in

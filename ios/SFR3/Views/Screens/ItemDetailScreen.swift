@@ -12,8 +12,11 @@ struct ItemDetailScreen: View {
     
     var body: some View {
         WebViewContainer(
-            content: .remote("http://localhost:5173/item"),
-            messageHandler: viewModel.webBridgeMessageHandler
+            content: .remote("http://localhost:5173/item/\(viewModel.state.item?.id ?? "")"),
+            messageHandlers: [
+                viewModel.itemFormMessageHandler,
+                viewModel.navigationMessageHandler
+            ]
         )
             .edgesIgnoringSafeArea(.all)
     }
