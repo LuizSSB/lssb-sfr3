@@ -1,8 +1,12 @@
 export enum AppErrorCode {
   UNKNOWN = -1,
 
-  ITEM_NOT_FOUND = 1,
-  ITEM_NAME_INVALID = 2,
+  WEB_BRIDGE_UNAVAILABLE = 1,
+
+  INVALID_FORMAT = 100,
+
+  ITEM_NOT_FOUND = 200,
+  ITEM_NAME_INVALID = 201,
 }
 
 export type AppError = Readonly<{
