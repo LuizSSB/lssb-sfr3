@@ -15,10 +15,17 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { checkmarkCircleOutline, closeCircleOutline } from "ionicons/icons";
-import { useEffect, useMemo } from "react";
+import {
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  closeOutline,
+} from "ionicons/icons";
+import { useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router";
+import { iocContainer } from "../ioc";
 import { AppErrorCode } from "../models/utils/AppError";
+import { NativeBridge } from "../nativeBridge";
+import { CancelBridgePayload } from "../nativeBridge/messages";
 import { useAppDispatch, useAppSelector } from "../store/react";
 import { itemFormSlice } from "../store/slices/itemFormSlice";
 import "./ItemPage.css";
@@ -46,7 +53,7 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
 
   const getItemError = useMemo(() => {
     if (getItemStatus.type === "failure") {
-      return `Failed to get item. ${getItemStatus.error?.code ? `Code ${AppErrorCode[getItemStatus.error.code!]}. ` : ""}Try again.`;
+      return `Failed to get item. ${getItemStatus.error?.code ? `Code ${AppErrorCode[getItemStatus.error.code!]}. ` : ""}`;
     }
     return undefined;
   }, [getItemStatus.type === "failure"]);
@@ -58,10 +65,21 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
     return undefined;
   }, [saveStatus.type === "failure"]);
 
+  const handleDismiss = useCallback(() => {
+    iocContainer.get(NativeBridge).send({
+      payloadName: "CancelWebBridgePayload",
+    } satisfies CancelBridgePayload);
+  }, []);
+
   return (
     <>
       <IonToolbar>
         <IonTitle>{title}</IonTitle>
+        <IonButtons slot="start">
+          <IonButton onClick={handleDismiss}>
+            <IonIcon icon={closeOutline} />
+          </IonButton>
+        </IonButtons>
         <IonButtons slot="end">
           <IonButton
             disabled={[getItemStatus.type, saveStatus.type].includes(

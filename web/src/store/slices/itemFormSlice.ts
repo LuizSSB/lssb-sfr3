@@ -11,6 +11,8 @@ import { ItemDataSource } from "../../datasources/ItemDataSource";
 import { iocContainer } from "../../ioc";
 import { ActionStatus } from "../../models/utils/ActionStatus";
 import { AppErrorCode, AppErrorEx } from "../../models/utils/AppError";
+import { NativeBridge } from "../../nativeBridge";
+import { CancelBridgePayload } from "../../nativeBridge/messages";
 
 type ItemFormState = {
   id?: string;
@@ -158,6 +160,10 @@ function* saveItem(): any {
         type: "success",
       }),
     );
+
+    yield call(iocContainer.get(NativeBridge).send, {
+      payloadName: "CancelWebBridgePayload",
+    } satisfies CancelBridgePayload);
   } catch (e: any) {
     yield put(
       itemFormSlice.actions.saveStatusResponse({

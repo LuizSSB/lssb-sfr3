@@ -29,8 +29,11 @@ export class NativeBridge {
 
   send = <TRequest extends BridgePayload, TResponse extends BridgePayload>(
     payload: TRequest,
-    successHandler: (response: TResponse) => Promise<boolean>,
-    failHandler: (response: ErrorBridgePayload) => Promise<boolean>,
+    successHandler: (response: TResponse) => Promise<boolean> = async () =>
+      true,
+    failHandler: (
+      response: ErrorBridgePayload,
+    ) => Promise<boolean> = async () => true,
   ) => {
     const bridge = (window as any).webkit?.messageHandlers?.webBridge;
     if (!bridge) {
