@@ -1,7 +1,7 @@
 import { AppError } from "./AppError";
 
 export type ActionStatus<TSuccess = undefined> =
-  | { type: "none" | "fetching" }
+  | { type: "none" | "running" }
   | ({ type: "success" } & (TSuccess extends undefined
       ? {
           result?: TSuccess;

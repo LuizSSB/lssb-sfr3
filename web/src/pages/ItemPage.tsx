@@ -43,7 +43,7 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
   const title = useMemo(() => {
     switch (getItemStatus.type) {
       case "none":
-      case "fetching":
+      case "running":
       case "failure":
         return "Preparing";
       case "success":
@@ -82,15 +82,13 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
         </IonButtons>
         <IonButtons slot="end">
           <IonButton
-            disabled={[getItemStatus.type, saveStatus.type].includes(
-              "fetching",
-            )}
+            disabled={[getItemStatus.type, saveStatus.type].includes("running")}
             onClick={() => dispatch(itemFormSlice.actions.save())}
           >
             Save
           </IonButton>
         </IonButtons>
-        {[getItemStatus.type, saveStatus.type].includes("fetching") && (
+        {[getItemStatus.type, saveStatus.type].includes("running") && (
           <IonProgressBar type="indeterminate" />
         )}
       </IonToolbar>
@@ -135,7 +133,7 @@ const ItemFormNameField: React.FC = () => {
   const isDisabled = useAppSelector(
     (s) =>
       s.itemForm.getItemStatus.type !== "success" ||
-      s.itemForm.saveStatus.type === "fetching",
+      s.itemForm.saveStatus.type === "running",
   );
   const dispatch = useAppDispatch();
 
@@ -159,7 +157,7 @@ const ItemFormNameField: React.FC = () => {
         switch (nameCheck.type) {
           case "none":
             return <></>;
-          case "fetching":
+          case "running":
             return <IonSpinner />;
           case "success":
             if (nameCheck.result.isAvailable) {
