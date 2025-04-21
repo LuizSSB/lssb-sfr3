@@ -136,7 +136,13 @@ function* saveItem(): any {
     return;
   }
 
-  if (itemForm.nameCheckStatus.type != "success") {
+  const name = itemForm.name.trim();
+  if (
+    !name.length ||
+    (!itemForm.id && itemForm.nameCheckStatus.type != "success") ||
+    (itemForm.nameCheckStatus.type == "success" &&
+      !itemForm.nameCheckStatus.result.isAvailable)
+  ) {
     return yield put(
       itemFormSlice.actions.saveStatusResponse({
         type: "failure",
