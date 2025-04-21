@@ -38,6 +38,7 @@ import Factory
     }
     
     func loadMore() {
+        guard state.canLoadMore else { return }
         Task {
             if let result = await load(pagination: .first(limit: 10)) {
                 self.state.items = (self.state.items ?? []) + result.entries
@@ -45,9 +46,8 @@ import Factory
         }
     }
     
-    private func load(pagination: Pagination) async -> Pagination.Page<Item>? {
-        guard state.itemsFetchStatus != .running,
-              state.canLoadMore
+    private func load(pagination: Pagination, ) async -> Pagination.Page<Item>? {
+        guard state.itemsFetchStatus != .running
         else { return nil }
         
         state.itemsFetchStatus = .running

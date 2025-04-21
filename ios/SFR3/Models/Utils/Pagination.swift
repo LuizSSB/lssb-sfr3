@@ -26,7 +26,7 @@ struct Pagination: Equatable, Hashable {
         
         var reachedEnd: Bool {
             if let limit = pagination.limit {
-                return limit > entries.count
+                return limit >= entries.count
             }
             return false
         }

@@ -31,17 +31,19 @@ struct ItemFormMessageHandler: WebBridgeMessageHandler.SubHandler {
             {
                 (m, request: CheckItemNameAvailabilityRequestWebBridgePayload) in
                 let items = try await itemDataSource.list(.first())
-                return CheckItemNameAvailabilityResponseWebBridgePayload(
-                    isAvailable: items.entries.allSatisfy {
-                        if $0.name == request.itemName {
-                            if let itemId = request.itemId,
-                               itemId == $0.id {
-                                return true
-                            }
-                            return false
+                let itemName = request.itemName.lowercased()
+                let isAvailable = items.entries.allSatisfy {
+                    if $0.name.lowercased() == itemName {
+                        if let itemId = request.itemId,
+                           itemId == $0.id {
+                            return true
                         }
-                        return true
+                        return false
                     }
+                    return true
+                }
+                return CheckItemNameAvailabilityResponseWebBridgePayload(
+                    isAvailable: isAvailable
                 )
             }
         ) { return }
