@@ -4,15 +4,18 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonItemGroup,
   IonList,
   IonPage,
   IonProgressBar,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { checkmarkCircleOutline, closeCircleOutline } from "ionicons/icons";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
 import { AppErrorCode } from "../models/utils/AppError";
@@ -110,6 +113,7 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
 
 const ItemFormNameField: React.FC = () => {
   const name = useAppSelector((s) => s.itemForm.name);
+  const nameCheck = useAppSelector((s) => s.itemForm.nameCheckStatus);
   const isDisabled = useAppSelector(
     (s) =>
       s.itemForm.getItemStatus.type !== "success" ||
@@ -117,16 +121,38 @@ const ItemFormNameField: React.FC = () => {
   );
   const dispatch = useAppDispatch();
 
+  console.log("nameCheck", nameCheck);
+
   return (
-    <IonInput
-      label="Name"
-      placeholder="Enter text"
-      value={name}
-      onIonInput={(e) => {
-        dispatch(itemFormSlice.actions.name(e.detail.value?.toString() ?? ""));
-      }}
-      disabled={isDisabled}
-    />
+    <div className="input-container">
+      <IonInput
+        label="Name"
+        placeholder="Enter text"
+        value={name}
+        onIonInput={(e) => {
+          dispatch(
+            itemFormSlice.actions.name(e.detail.value?.toString() ?? ""),
+          );
+        }}
+        disabled={isDisabled}
+        // helperText and errorText are bugged :sigh:
+      />
+      {(() => {
+        switch (nameCheck.type) {
+          case "none":
+            return <></>;
+          case "fetching":
+            return <IonSpinner />;
+          case "success":
+            if (nameCheck.result.isAvailable) {
+              return <IonIcon icon={checkmarkCircleOutline} color="success" />;
+            }
+            return <IonIcon icon={closeCircleOutline} />;
+          case "failure":
+            return <IonIcon icon={closeCircleOutline} color="danger" />;
+        }
+      })()}
+    </div>
   );
 };
 

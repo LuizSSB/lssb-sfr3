@@ -17,7 +17,7 @@ type ItemFormState = {
   getItemStatus: ActionStatus<Item | undefined>;
 
   name: string;
-  nameCheckStatus: ActionStatus<{ allowed: boolean }>;
+  nameCheckStatus: ActionStatus<{ name: string; isAvailable: boolean }>;
 
   saveStatus: ActionStatus;
 };

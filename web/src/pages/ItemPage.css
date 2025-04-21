@@ -1,9 +1,5 @@
-.save-toolbar {
+.input-container {
     display: flex;
-
-}
-.save-toolbar * {
-    padding: 8px;
+    align-items: center;
     width: 100%;
-    background: blue;
 }

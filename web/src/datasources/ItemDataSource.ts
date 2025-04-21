@@ -40,8 +40,8 @@ export class ItemDataSource {
   checkNameAvailability = async (
     name: string,
     existingItemId?: string,
-  ): Promise<{ available: boolean }> => {
-    const available = await new Promise<boolean>((res, rej) => {
+  ): Promise<{ isAvailable: boolean; name: string }> => {
+    const isAvailable = await new Promise<boolean>((res, rej) => {
       const request: CheckItemNameAvailabilityRequestBridgePayload = {
         payloadName: "CheckItemNameAvailabilityRequestWebBridgePayload",
         itemId: existingItemId,
@@ -59,7 +59,7 @@ export class ItemDataSource {
         },
       );
     });
-    return { available };
+    return { isAvailable, name };
   };
 
   save = async (item: Omit<Item, "id"> & { id?: string }) => {
