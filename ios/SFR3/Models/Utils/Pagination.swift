@@ -6,8 +6,15 @@
 //
 
 struct Pagination: Equatable, Hashable {
-    var offset: UInt
-    var limit: UInt?
+    var offset: Int
+    var limit: Int?
+    
+    var lastIndex: Int? {
+        if let limit {
+            return offset + limit
+        }
+        return nil
+    }
     
     var next: Self {
         return .init(
@@ -16,7 +23,7 @@ struct Pagination: Equatable, Hashable {
         )
     }
     
-    static func first(limit: UInt? = 0) -> Self {
+    static func first(limit: Int? = 0) -> Self {
         return .init(offset: 0, limit: limit)
     }
     
@@ -26,7 +33,7 @@ struct Pagination: Equatable, Hashable {
         
         var reachedEnd: Bool {
             if let limit = pagination.limit {
-                return limit >= entries.count
+                return limit > entries.count
             }
             return false
         }
