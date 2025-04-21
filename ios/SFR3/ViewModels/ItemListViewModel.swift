@@ -46,7 +46,25 @@ import Factory
     var state = State()
     
     @ObservationIgnored
+    private var notificationCenterObserer: Any?
+    
+    @ObservationIgnored
     @Injected(\.itemDataSource) private var itemDataSource
+    
+    init() {
+        notificationCenterObserer = NotificationCenter.default.addObserver {
+            [weak self] (notification: ItemSavedAppNotification) in
+            guard let self else { return }
+            Task {
+                await self.refresh()
+            }
+        }
+    }
+    
+    deinit {
+        guard let notificationCenterObserer else { return }
+        NotificationCenter.default.removeObserver(notificationCenterObserer)
+    }
 
     // Ideally, wouldn't need to be async, but view refreshing stuff requires it.
     func refresh() async {

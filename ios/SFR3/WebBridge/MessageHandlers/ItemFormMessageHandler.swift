@@ -54,6 +54,9 @@ struct ItemFormMessageHandler: WebBridgeMessageHandler.SubHandler {
             {
                 (m, request: SaveItemRequestWebBridgePayload) in
                 try await itemDataSource.upsert(request.item)
+                NotificationCenter.default.post(
+                    ItemSavedAppNotification(item: request.item)
+                )
                 return SaveItemResponseWebBridgePayload()
             }
         ) { return }
