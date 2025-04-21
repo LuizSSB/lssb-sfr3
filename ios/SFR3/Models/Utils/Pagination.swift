@@ -23,7 +23,7 @@ struct Pagination: Equatable, Hashable {
         )
     }
     
-    static func first(limit: Int? = 0) -> Self {
+    static func first(limit: Int? = nil) -> Self {
         return .init(offset: 0, limit: limit)
     }
     
