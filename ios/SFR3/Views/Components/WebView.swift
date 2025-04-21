@@ -11,20 +11,50 @@ import WebKit
 enum WebViewContent {
     case remote(String),
          local(htmlFile: String, directory: String? = nil)
-    
 }
 
 private struct ControllableWebView: UIViewRepresentable {
+    class Coordinator: NSObject, WKNavigationDelegate {
+        var parent: ControllableWebView
+        
+        init(_ parent: ControllableWebView) {
+            self.parent = parent
+        }
+        
+        func webView(
+            _ webView: WKWebView,
+            didFail navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            parent.onLoadFailed?(error)
+        }
+        
+        func webView(
+            _ webView: WKWebView,
+            didFailProvisionalNavigation navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            parent.onLoadFailed?(error)
+        }
+    }
+    
     let content: WebViewContent
+    var onLoadFailed: ((Error) -> Void)?
     
     @State var webView: WKWebView
     
     init(content: WebViewContent) {
         self.content = content
-        let config = WKWebViewConfiguration()
-        config.userContentController = WKUserContentController()
-        self.webView = WKWebView(frame: .zero, configuration: config)
-        self.webView.isInspectable = true
+        
+        webView = WKWebView(
+            frame: .zero,
+            configuration: {
+                let config = WKWebViewConfiguration()
+                config.userContentController = WKUserContentController()
+                return config
+            }()
+        )
+        webView.isInspectable = true
     }
     
     func makeUIView(context: Context) -> WKWebView {
@@ -46,9 +76,14 @@ private struct ControllableWebView: UIViewRepresentable {
         
         return webView
     }
+    func makeCoordinator() -> Coordinator {
+        let coordinator = Coordinator(self)
+        webView.navigationDelegate = coordinator
+        return coordinator
+    }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        // No-op
+        (webView.navigationDelegate as? Coordinator)?.parent = self
     }
     
     func add(handler: WebBridgeMessageHandler) {
@@ -68,22 +103,39 @@ private struct ControllableWebView: UIViewRepresentable {
 struct WebViewContainer: View {
     let messageHandler: WebBridgeMessageHandler
     @State private var webView: ControllableWebView
+    @State private var loadFailure: Error?
     
     init(
         content: WebViewContent,
         messageHandlers: [any WebBridgeMessageHandler.SubHandler] = []
     ) {
-        self.webView = .init(content: content)
         self.messageHandler = .init(subHandlers: messageHandlers)
+        self.webView = .init(content: content)
     }
     
     var body: some View {
-        webView
-            .onAppear {
-                webView.add(handler: messageHandler)
+        VStack {
+            if let loadFailure {
+                Group {
+                    Text("Unable to load web view")
+                    Text("Reason \(loadFailure.localizedDescription)")
+                    Button("Reload") {
+                        self.loadFailure = nil
+                    }
+                }
+                .padding()
+            } else {
+                webView
+                    .onAppear {
+                        webView.onLoadFailed = {
+                            loadFailure = $0
+                        }
+                        webView.add(handler: messageHandler)
+                    }
+                    .onDisappear {
+                        webView.remove(handler: messageHandler)
+                    }
             }
-            .onDisappear {
-                webView.remove(handler: messageHandler)
-            }
+        }
     }
 }
