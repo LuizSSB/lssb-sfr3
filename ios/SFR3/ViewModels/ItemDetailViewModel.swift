@@ -15,6 +15,9 @@ import Factory
     
     var state: State
     
+    @ObservationIgnored
+    let webBridgeMessageHandler: WebBridgeMessageHandler = ItemFormMessageHandler()
+    
     init(item: Item) {
         state = .init(item: item)
     }

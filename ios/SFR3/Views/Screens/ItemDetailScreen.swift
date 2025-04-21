@@ -11,9 +11,10 @@ struct ItemDetailScreen: View {
     @State var viewModel: ItemDetailViewModel
     
     var body: some View {
-        let _ = print("render detail")
-        Text(viewModel.state.item.name)
-        Button("asd") {
-        }
+        WebViewContainer(
+            content: .remote("http://localhost:5173/item"),
+            messageHandler: viewModel.webBridgeMessageHandler
+        )
+            .edgesIgnoringSafeArea(.all)
     }
 }
