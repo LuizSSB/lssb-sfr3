@@ -14,7 +14,8 @@ struct ItemDetailScreen: View {
     
     var body: some View {
         WebViewContainer(
-            content: .remote("http://localhost:5173/item/\(viewModel.state.item?.id ?? "")"),
+            content: WebContentReference.forWebComponent,
+            path: viewModel.state.route.path,
             messageHandlers: [
                 viewModel.itemFormMessageHandler,
                 viewModel.navigationMessageHandler

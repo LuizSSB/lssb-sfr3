@@ -8,11 +8,6 @@
 import SwiftUI
 import WebKit
 
-enum WebViewContent {
-    case remote(String),
-         local(htmlFile: String, directory: String? = nil)
-}
-
 private struct ControllableWebView: UIViewRepresentable {
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: ControllableWebView
@@ -38,13 +33,13 @@ private struct ControllableWebView: UIViewRepresentable {
         }
     }
     
-    let content: WebViewContent
+    let contentAndPath: (WebContentReference, String?)
     var onLoadFailed: ((Error) -> Void)?
     
     @State var webView: WKWebView
     
-    init(content: WebViewContent) {
-        self.content = content
+    init(content: WebContentReference, path: String? = nil) {
+        self.contentAndPath = (content, path)
         
         webView = WKWebView(
             frame: .zero,
@@ -58,20 +53,37 @@ private struct ControllableWebView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> WKWebView {
-        switch content {
+        switch contentAndPath.0 {
         case .remote(let urlString):
-            webView.load(URLRequest(url: URL(string: urlString)!))
+            guard let url = { () -> URL? in
+                guard let url = URL(string: urlString)
+                else { return nil}
+                
+                if let path = contentAndPath.1 {
+                    return url.appending(path: path)
+                }
+                
+                return url
+            }()
+            else {
+                onLoadFailed?(WebContentReference.InvalidReferenceError())
+                return webView
+            }
+            webView.load(URLRequest(url: url))
             
         case let .local(htmlFile, directory):
-            if let path = Bundle.main.path(
+            guard let path = Bundle.main.path(
                 forResource: htmlFile,
                 ofType: "html",
                 inDirectory: directory
-            ) {
-                let url = URL(fileURLWithPath: path)
-                let dir = url.deletingLastPathComponent()
-                webView.loadFileURL(url, allowingReadAccessTo: dir)
+            )
+            else {
+                onLoadFailed?(WebContentReference.InvalidReferenceError())
+                return webView
             }
+            let url = URL(fileURLWithPath: path)
+            let dir = url.deletingLastPathComponent()
+            webView.loadFileURL(url, allowingReadAccessTo: dir)
         }
         
         return webView
@@ -106,11 +118,12 @@ struct WebViewContainer: View {
     @State private var loadFailure: Error?
     
     init(
-        content: WebViewContent,
+        content: WebContentReference,
+        path: String? = nil,
         messageHandlers: [any WebBridgeMessageHandler.SubHandler] = []
     ) {
         self.messageHandler = .init(subHandlers: messageHandlers)
-        self.webView = .init(content: content)
+        self.webView = .init(content: content, path: path)
     }
     
     var body: some View {

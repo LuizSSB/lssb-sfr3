@@ -11,6 +11,17 @@ import Factory
 @Observable class ItemDetailViewModel: ViewModel {
     struct State: ViewModelState {
         var item: Item?
+        let route: WebComponentConfiguration.Route
+        
+        init(item: Item? = nil) {
+            self.item = item
+            route = {
+                if let item {
+                    return .itemDetail(item.id)
+                }
+                return .itemRoot
+            }()
+        }
     }
     
     var state: State
