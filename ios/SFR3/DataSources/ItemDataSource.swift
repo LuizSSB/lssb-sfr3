@@ -12,12 +12,20 @@ struct ItemDataSource {
     var list = {
         (_ pagination: Pagination) async throws -> Pagination.Page<Item> in
         try? await Task.sleep(for: .seconds(2))
-        guard !Self.database.isEmpty
+        
+        guard !Self.database.isEmpty,
+              Self.database.count > pagination.offset
         else { return .init(entries: [], pagination: pagination)}
         
-        let entryCount = min(Self.database.count, Int(pagination.limit ?? .max))
+        let lastIndexExclusive = min(
+            Self.database.count,
+            pagination.lastIndex ?? .max
+        )
+        
+        let allEntries = Self.database
+        let entries = [Item](allEntries[pagination.offset..<lastIndexExclusive])
         return .init(
-            entries: [Item](Self.database[0..<entryCount]),
+            entries: entries,
             pagination: pagination
         )
     }
