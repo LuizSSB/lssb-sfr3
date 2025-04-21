@@ -78,7 +78,7 @@ function* getItem(
     );
 
     yield put(
-      itemFormSlice.actions.nameCheckStatusResponse(
+      itemFormSlice.actions.getItemStatusResponse(
         result
           ? {
               type: "success",
@@ -89,7 +89,7 @@ function* getItem(
     );
   } catch (e: any) {
     yield put(
-      itemFormSlice.actions.nameCheckStatusResponse({
+      itemFormSlice.actions.getItemStatusResponse({
         type: "failure",
         error: AppErrorEx.fromError(e),
       }),
@@ -100,6 +100,8 @@ function* getItem(
 function* checkItemNameAvailability(
   action: ReturnType<typeof itemFormSlice.actions.name>,
 ): any {
+  const { itemForm }: { itemForm: ItemFormState } = yield select((s) => s);
+
   try {
     yield put(
       itemFormSlice.actions.nameCheckStatusResponse({ type: "fetching" }),
@@ -108,6 +110,7 @@ function* checkItemNameAvailability(
     const result = yield call(
       iocContainer.get(ItemDataSource).checkNameAvailability,
       action.payload,
+      itemForm.id,
     );
 
     yield put(
@@ -128,7 +131,7 @@ function* checkItemNameAvailability(
 
 function* saveItem(): any {
   const { itemForm }: { itemForm: ItemFormState } = yield select((s) => s);
-  console.log("state", itemForm);
+
   if (itemForm.saveStatus.type === "fetching") {
     return;
   }
