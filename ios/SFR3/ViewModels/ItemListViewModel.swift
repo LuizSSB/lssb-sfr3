@@ -69,13 +69,13 @@ import Factory
     // Ideally, wouldn't need to be async, but view refreshing stuff requires it.
     func refresh() async {
         if let result = await load(pagination: .first(limit: 10)) {
-            withAnimation {
-                let didAlreadyHaveStuff = state.items != nil
-                state.items = result.entries
+            update {
+                let didAlreadyHaveStuff = self.state.items != nil
+                self.state.items = result.entries
                 
                 // HACK: after refreshing, if nothing has changed, the top items won't be rerendered, and, as such, their onAppear will not be triggered, so if all of the page's results fit into the list, it won't loadMore by itself.
                 if didAlreadyHaveStuff {
-                    loadMore()
+                    self.loadMore()
                 }
             }
         }
@@ -88,8 +88,8 @@ import Factory
         
         Task {
             if let result = await load(pagination: result.pagination.next) {
-                withAnimation {
-                    state.items = (self.state.items ?? []) + result.entries
+                self.update {
+                    self.state.items = (self.state.items ?? []) + result.entries
                 }
             }
         }
@@ -135,13 +135,13 @@ import Factory
                       let indexOfDeleted = items.firstIndex(of: deleted)
                 else { return } // WTF
                 
-                withAnimation {
-                    state.items!.remove(at: indexOfDeleted)
+                update {
+                    self.state.items!.remove(at: indexOfDeleted)
                     
-                    guard case let .success(result) = state.itemsFetchStatus
+                    guard case let .success(result) = self.state.itemsFetchStatus
                     else { return }
                 
-                    state.itemsFetchStatus = .success(
+                    self.state.itemsFetchStatus = .success(
                         .init(
                             entries: {
                                 var resultEntries = result.entries

@@ -24,10 +24,11 @@ struct ItemDataSource {
         
         let allEntries = Self.database
         let entries = [Item](allEntries[pagination.offset..<lastIndexExclusive])
-        return .init(
+        let page = Pagination.Page<Item>(
             entries: entries,
             pagination: pagination
         )
+        return page
     }
     
     var get = { (_ itemId: String) async throws -> Item? in

@@ -5,6 +5,9 @@
 //  Created by Luiz SSB on 18/04/25.
 //
 
+import Foundation
+import SwiftUI
+
 protocol ViewModelState: Equatable, Hashable {
 }
 
@@ -20,5 +23,20 @@ extension ViewModel {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(state)
+    }
+}
+
+extension ViewModel {
+    func update(
+        animation: Animation? = .default,
+        action: @escaping () -> Void
+    ) -> Void {
+        DispatchQueue.main.async {
+            if let animation {
+                withAnimation(animation, action)
+            } else {
+                action()
+            }
+        }
     }
 }
