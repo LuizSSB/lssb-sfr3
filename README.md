@@ -4,9 +4,10 @@ Take-home assessment for the position of Software Engineer at SFR3.
 
 ## Structure
 - `ios`: Code for native, SwiftUI iOS app.
+  - Requires Xcode 16
   - Uses SwiftPM
 - `web`: Ionic/React SPA used by the iOS app to render a detail page.
-  - Uses yarn
+  - Requires Node 20 and yarn
 
 ### Dev setup:
 1. Download web dependencies
