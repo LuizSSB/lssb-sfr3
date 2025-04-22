@@ -116,7 +116,6 @@ const ItemFormHeaderToolbar: React.FC<Params> = ({ id }) => {
       <IonAlert
         isOpen={!!saveError}
         onDidDismiss={(e) => {
-          console.log("e", e);
           dispatch(itemFormSlice.actions.saveStatusResponse({ type: "none" }));
         }}
         header="Failure"
@@ -136,8 +135,6 @@ const ItemFormNameField: React.FC = () => {
       s.itemForm.saveStatus.type === "running",
   );
   const dispatch = useAppDispatch();
-
-  console.log("nameCheck", nameCheck);
 
   return (
     <div className="input-container">

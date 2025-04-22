@@ -14,11 +14,12 @@ export class NativeBridge {
 
   setUp = () => {
     if ((window as any).webBridge) {
-      return;
+      throw new Error(
+        "`window.webBridge` is undefined. This app is not designed to be opened outside a WKWebView.",
+      );
     }
 
     (window as any).webBridge = (message: string) => {
-      console.log("native message", message);
       const deserialized: NativeBridgeMessage = JSON.parse(message);
       const handlerForMessage = this.pendingHandlers.get(
         deserialized.messageId,
